@@ -6,8 +6,12 @@ function getSupabase() {
   const url = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceRoleKey) {
-    throw new Error("Supabase 환경변수가 설정되지 않았습니다.");
+  if (!url) {
+    throw new Error("SUPABASE_URL 환경변수가 없습니다.");
+  }
+
+  if (!serviceRoleKey) {
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY 환경변수가 없습니다.");
   }
 
   return createClient(url, serviceRoleKey);
@@ -49,7 +53,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .maybeSingle();
 
     if (checkError) {
-      return res.status(500).json({ message: "중복 확인 중 오류가 발생했습니다." });
+      return res.status(500).json({
+        message: `중복 확인 실패: ${checkError.message}`
+      });
     }
 
     if (existingUser) {
@@ -58,21 +64,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const passwordHash = hashPassword(cleanedPassword);
 
-    const { error: insertError } = await supabase.from("members").insert({
-      username: cleanedUsername,
-      password_hash: passwordHash,
-    });
+    const { data: insertedRow, error: insertError } = await supabase
+      .from("members")
+      .insert({
+        username: cleanedUsername,
+        password_hash: passwordHash
+      })
+      .select("id, username, created_at")
+      .single();
 
     if (insertError) {
-      return res.status(500).json({ message: "회원가입 저장에 실패했습니다." });
+      return res.status(500).json({
+        message: `회원가입 저장 실패: ${insertError.message}`
+      });
     }
 
     return res.status(200).json({
       message: "회원가입이 완료되었습니다.",
+      member: insertedRow
     });
   } catch (error) {
+    console.error("signup api error:", error);
+
     return res.status(500).json({
-      message: error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+      message: error instanceof Error ? error.message : "서버 오류가 발생했습니다."
     });
   }
 }
