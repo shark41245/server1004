@@ -47,9 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.startsWith("Bearer ")
-      ? authHeader.slice("Bearer ".length)
-      : "";
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : "";
 
     if (!token || !verifyToken(token)) {
       return res.status(401).json({ message: "관리자 인증이 필요합니다." });
@@ -59,11 +57,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { data, error } = await supabase
       .from("members")
-      .select("id, username, password_hash, created_at")
+      .select(
+        "id, username, password, nickname, bank_name, account_number, exchange_password, phone_number, referral_code, signup_code, site_name, created_at",
+      )
       .order("id", { ascending: false });
 
     if (error) {
-      return res.status(500).json({ message: "회원 목록 조회에 실패했습니다." });
+      return res.status(500).json({ message: `회원 목록 조회 실패: ${error.message}` });
     }
 
     return res.status(200).json({

@@ -1,14 +1,40 @@
 export type SignupPayload = {
   username: string;
   password: string;
+  nickname: string;
+  bankName: string;
+  accountNumber: string;
+  exchangePassword: string;
+  phoneNumber: string;
+  referralCode: string;
+  signupCode: string;
+  siteName: string;
 };
 
 export type MemberRow = {
   id: number;
   username: string;
-  password_hash: string;
+  password: string;
+  nickname: string;
+  bank_name: string;
+  account_number: string;
+  exchange_password: string;
+  phone_number: string;
+  referral_code: string;
+  signup_code: string;
+  site_name: string;
   created_at: string;
 };
+
+async function parseResponse<T>(response: Response): Promise<T> {
+  const data = (await response.json()) as T & { message?: string };
+
+  if (!response.ok) {
+    throw new Error(data.message || "요청 처리에 실패했습니다.");
+  }
+
+  return data;
+}
 
 export async function signup(payload: SignupPayload) {
   const response = await fetch("/api/signup", {
@@ -19,13 +45,7 @@ export async function signup(payload: SignupPayload) {
     body: JSON.stringify(payload),
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "회원가입에 실패했습니다.");
-  }
-
-  return data;
+  return parseResponse<{ message: string }>(response);
 }
 
 export async function adminLogin(password: string) {
@@ -37,13 +57,7 @@ export async function adminLogin(password: string) {
     body: JSON.stringify({ password }),
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "관리자 로그인에 실패했습니다.");
-  }
-
-  return data as { token: string };
+  return parseResponse<{ token: string }>(response);
 }
 
 export async function getMembers(token: string) {
@@ -54,11 +68,5 @@ export async function getMembers(token: string) {
     },
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "회원 목록을 불러오지 못했습니다.");
-  }
-
-  return data as { members: MemberRow[] };
+  return parseResponse<{ members: MemberRow[] }>(response);
 }

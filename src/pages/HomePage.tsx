@@ -1,81 +1,68 @@
 import { useState } from "react";
-import { signup } from "../lib/api";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSignup = async () => {
-    try {
-      setLoading(true);
-      setMessage("");
-
-      if (!username.trim() || !password.trim()) {
-        setMessage("아이디와 비밀번호를 입력해 주세요.");
-        return;
-      }
-
-      await signup({
-        username: username.trim(),
-        password: password.trim(),
-      });
-
-      setMessage("회원가입이 완료되었습니다.");
-      setUsername("");
-      setPassword("");
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleFakeLogin = () => {
+    if (!username.trim() || !password.trim()) {
+      setMessage("아이디와 비밀번호를 입력해 주세요.");
+      return;
+    }
+
     setMessage("회원가입 승인대기중입니다.");
   };
 
   return (
-    <main className="page">
-      <section className="card auth-card">
-        <h1>회원가입</h1>
-        <p className="description">
-          아이디와 비밀번호를 입력해 회원가입할 수 있습니다.
+    <main className="hero-page">
+      <section className="hero-copy">
+        <p className="eyebrow">PREMIUM MEMBER SERVICE</p>
+        <h1>깊고 차분한 바다색 배경 위에서 시작하는 회원 전용 공간</h1>
+        <p className="hero-text">
+          첫 화면에는 로그인만 보이도록 구성하고, 회원가입은 별도 페이지에서 차분하게
+          진행되도록 디자인했습니다.
         </p>
+      </section>
+
+      <section className="glass-panel login-panel">
+        <div className="panel-badge">Member Login</div>
+        <h2>로그인</h2>
+        <p className="panel-text">아이디와 비밀번호를 입력한 뒤 로그인 또는 회원가입을 진행해 주세요.</p>
 
         <div className="field">
-          <label htmlFor="username">아이디</label>
+          <label htmlFor="home-username">아이디 입력</label>
           <input
-            id="username"
+            id="home-username"
             type="text"
-            placeholder="아이디 입력"
+            placeholder="아이디를 입력하세요"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(event) => setUsername(event.target.value)}
           />
         </div>
 
         <div className="field">
-          <label htmlFor="password">비밀번호</label>
+          <label htmlFor="home-password">비밀번호 입력</label>
           <input
-            id="password"
+            id="home-password"
             type="password"
-            placeholder="비밀번호 입력"
+            placeholder="비밀번호를 입력하세요"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
         </div>
 
-        <div className="button-row">
-          <button onClick={handleSignup} disabled={loading}>
-            {loading ? "처리중..." : "회원가입"}
-          </button>
-          <button className="secondary" onClick={handleFakeLogin} disabled={loading}>
+        <div className="stack-buttons">
+          <button type="button" className="primary-button" onClick={handleFakeLogin}>
             로그인
           </button>
+          <Link to="/signup" className="ghost-button">
+            회원가입
+          </Link>
         </div>
 
-        {message && <p className="message">{message}</p>}
+        {message ? <p className="floating-message">{message}</p> : null}
       </section>
     </main>
   );

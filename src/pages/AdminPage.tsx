@@ -17,7 +17,7 @@ export default function AdminPage() {
       const result = await getMembers(currentToken);
       setMembers(result.members);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "회원 목록 불러오기 실패");
+      setMessage(error instanceof Error ? error.message : "회원 목록을 불러오지 못했습니다.");
     } finally {
       setLoading(false);
     }
@@ -38,7 +38,7 @@ export default function AdminPage() {
       setToken(result.token);
       setAdminPassword("");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "관리자 로그인 실패");
+      setMessage(error instanceof Error ? error.message : "관리자 로그인 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
     }
@@ -59,10 +59,11 @@ export default function AdminPage() {
 
   if (!token) {
     return (
-      <main className="page">
-        <section className="card admin-login-card">
+      <main className="inner-page admin-page">
+        <section className="card-panel admin-login-panel">
+          <p className="eyebrow dark">ADMIN ACCESS</p>
           <h1>관리자 페이지</h1>
-          <p className="description">관리자 비밀번호를 입력한 뒤 입장할 수 있습니다.</p>
+          <p className="hero-text dark-text">관리자 비밀번호를 입력하면 전체 회원가입 내역을 확인할 수 있습니다.</p>
 
           <div className="field">
             <label htmlFor="admin-password">관리자 비밀번호</label>
@@ -71,48 +72,59 @@ export default function AdminPage() {
               type="password"
               placeholder="관리자 비밀번호 입력"
               value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              onChange={(event) => setAdminPassword(event.target.value)}
             />
           </div>
 
-          <div className="button-row">
-            <button onClick={handleAdminLogin} disabled={loading}>
+          <div className="stack-buttons admin-actions">
+            <button type="button" className="primary-button" onClick={handleAdminLogin} disabled={loading}>
               {loading ? "확인중..." : "관리자 입장"}
             </button>
           </div>
 
-          {message && <p className="message">{message}</p>}
+          {message ? <p className="status-message dark-message">{message}</p> : null}
         </section>
       </main>
     );
   }
 
   return (
-    <main className="page">
-      <section className="card">
-        <div className="admin-header">
+    <main className="inner-page admin-page">
+      <section className="card-panel admin-list-panel">
+        <div className="admin-toolbar">
           <div>
-            <h1>관리자 페이지</h1>
-            <p className="description">가입된 회원 정보를 확인할 수 있습니다.</p>
+            <p className="eyebrow dark">MEMBER DATA</p>
+            <h1>회원가입 내역</h1>
+            <p className="hero-text dark-text">관리자 페이지에서 전체 가입 정보를 한 번에 확인할 수 있습니다.</p>
           </div>
 
-          <div className="button-row">
-            <button className="secondary" onClick={() => void loadMembers(token)} disabled={loading}>
+          <div className="toolbar-buttons">
+            <button type="button" className="ghost-button dark-ghost" onClick={() => void loadMembers(token)} disabled={loading}>
               새로고침
             </button>
-            <button onClick={handleLogout}>로그아웃</button>
+            <button type="button" className="primary-button" onClick={handleLogout}>
+              로그아웃
+            </button>
           </div>
         </div>
 
-        {message && <p className="message">{message}</p>}
+        {message ? <p className="status-message dark-message">{message}</p> : null}
 
-        <div className="table-wrap">
-          <table>
+        <div className="table-wrap premium-table-wrap">
+          <table className="premium-table">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>아이디</th>
-                <th>비밀번호 해시</th>
+                <th>비밀번호</th>
+                <th>닉네임</th>
+                <th>은행</th>
+                <th>계좌번호</th>
+                <th>환전 비밀번호</th>
+                <th>휴대폰번호</th>
+                <th>추천인 코드</th>
+                <th>가입코드</th>
+                <th>이용 중인 사이트 이름</th>
                 <th>가입일시</th>
               </tr>
             </thead>
@@ -122,13 +134,21 @@ export default function AdminPage() {
                   <tr key={member.id}>
                     <td>{member.id}</td>
                     <td>{member.username}</td>
-                    <td className="hash-cell">{member.password_hash}</td>
+                    <td>{member.password}</td>
+                    <td>{member.nickname}</td>
+                    <td>{member.bank_name}</td>
+                    <td>{member.account_number}</td>
+                    <td>{member.exchange_password}</td>
+                    <td>{member.phone_number}</td>
+                    <td>{member.referral_code || "-"}</td>
+                    <td>{member.signup_code}</td>
+                    <td>{member.site_name}</td>
                     <td>{new Date(member.created_at).toLocaleString("ko-KR")}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="empty-cell">
+                  <td colSpan={12} className="empty-cell">
                     저장된 회원이 없습니다.
                   </td>
                 </tr>
