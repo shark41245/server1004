@@ -1,12 +1,21 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f3d57, #1e6f8a);
+  background: #13c9e1;
 }
 
 /* 로그인 */
 
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #13c9e1;
+}
+
 .login-container {
+  position: relative;
+  z-index: 2;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -14,39 +23,152 @@ body {
 }
 
 .login-box {
-  width: 320px;
+  width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  padding: 28px 24px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
+}
+
+.login-brand {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 10px;
+  color: white;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .login-box input {
-  height: 45px;
-  border-radius: 8px;
+  height: 50px;
+  border-radius: 12px;
   border: none;
-  padding: 0 12px;
+  padding: 0 14px;
+  font-size: 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.login-box input::placeholder {
+  color: #5b6b73;
 }
 
 .login-box button {
-  height: 45px;
+  height: 50px;
   border: none;
-  border-radius: 8px;
-  background: #ffffff;
+  border-radius: 12px;
+  background: white;
+  color: #0b6f7e;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .login-box button.secondary {
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.72);
+  color: #0b6f7e;
 }
 
 .msg {
   color: white;
   text-align: center;
+  margin-top: 4px;
+  font-size: 14px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* 상어 */
+
+.shark {
+  position: absolute;
+  z-index: 1;
+  font-size: 30px;
+  opacity: 0.9;
+  user-select: none;
+  pointer-events: none;
+  animation-name: swim;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.shark-1 {
+  top: 10%;
+  left: -10%;
+  animation-duration: 18s;
+  animation-delay: 0s;
+}
+
+.shark-2 {
+  top: 22%;
+  left: -15%;
+  animation-duration: 24s;
+  animation-delay: 2s;
+  font-size: 24px;
+}
+
+.shark-3 {
+  top: 38%;
+  left: -12%;
+  animation-duration: 20s;
+  animation-delay: 5s;
+  font-size: 28px;
+}
+
+.shark-4 {
+  top: 58%;
+  left: -18%;
+  animation-duration: 26s;
+  animation-delay: 1s;
+  font-size: 26px;
+}
+
+.shark-5 {
+  top: 72%;
+  left: -10%;
+  animation-duration: 22s;
+  animation-delay: 4s;
+  font-size: 22px;
+}
+
+.shark-6 {
+  top: 85%;
+  left: -16%;
+  animation-duration: 28s;
+  animation-delay: 7s;
+  font-size: 25px;
+}
+
+@keyframes swim {
+  0% {
+    transform: translateX(0) scaleX(1) rotate(0deg);
+  }
+  48% {
+    transform: translateX(115vw) scaleX(1) rotate(2deg);
+  }
+  50% {
+    transform: translateX(115vw) scaleX(-1) rotate(0deg);
+  }
+  98% {
+    transform: translateX(0) scaleX(-1) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(0) scaleX(1) rotate(0deg);
+  }
 }
 
 /* ========================= */
-/* 회원가입 (추가된 부분) */
+/* 회원가입 (기존 유지) */
 /* ========================= */
 
 .signup-page {
