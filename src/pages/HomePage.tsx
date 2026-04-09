@@ -1,5 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+type SharkItem = {
+  id: number;
+  top: string;
+  left: string;
+  size: string;
+  duration: string;
+  delay: string;
+  direction: 1 | -1;
+};
 
 export default function HomePage() {
   const [username, setUsername] = useState("");
@@ -7,18 +17,42 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const sharks = useMemo<SharkItem[]>(
+    () =>
+      Array.from({ length: 18 }).map((_, i) => ({
+        id: i,
+        top: `${Math.random() * 92}%`,
+        left: `${-25 - Math.random() * 25}%`,
+        size: `${20 + Math.random() * 16}px`,
+        duration: `${16 + Math.random() * 14}s`,
+        delay: `${Math.random() * 8}s`,
+        direction: Math.random() > 0.5 ? 1 : -1,
+      })),
+    []
+  );
+
   const handleLogin = () => {
     setMessage("회원가입 승인대기중입니다.");
   };
 
   return (
     <div className="login-page">
-      <div className="shark shark-1">🦈</div>
-      <div className="shark shark-2">🦈</div>
-      <div className="shark shark-3">🦈</div>
-      <div className="shark shark-4">🦈</div>
-      <div className="shark shark-5">🦈</div>
-      <div className="shark shark-6">🦈</div>
+      {sharks.map((shark) => (
+        <div
+          key={shark.id}
+          className="shark"
+          style={{
+            top: shark.top,
+            left: shark.left,
+            fontSize: shark.size,
+            animationDuration: shark.duration,
+            animationDelay: shark.delay,
+            transform: `scaleX(${shark.direction})`,
+          }}
+        >
+          🦈
+        </div>
+      ))}
 
       <div className="login-container">
         <div className="login-box">
