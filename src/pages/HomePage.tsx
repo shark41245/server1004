@@ -12,28 +12,39 @@ export default function HomePage() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <input
-          type="text"
-          placeholder="아이디"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+    <div className="login-page">
+      <div className="shark shark-1">🦈</div>
+      <div className="shark shark-2">🦈</div>
+      <div className="shark shark-3">🦈</div>
+      <div className="shark shark-4">🦈</div>
+      <div className="shark shark-5">🦈</div>
+      <div className="shark shark-6">🦈</div>
 
-        <input
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <div className="login-container">
+        <div className="login-box">
+          <div className="login-brand">SHARK</div>
 
-        <button onClick={handleLogin}>로그인</button>
-        <button className="secondary" onClick={() => navigate("/signup")}>
-          회원가입
-        </button>
+          <input
+            type="text"
+            placeholder="아이디"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        {message && <p className="msg">{message}</p>}
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button onClick={handleLogin}>로그인</button>
+          <button className="secondary" onClick={() => navigate("/signup")}>
+            회원가입
+          </button>
+
+          {message && <p className="msg">{message}</p>}
+        </div>
       </div>
     </div>
   );
