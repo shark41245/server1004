@@ -4,6 +4,8 @@ body {
   background: linear-gradient(135deg, #0f3d57, #1e6f8a);
 }
 
+/* 로그인 */
+
 .login-container {
   height: 100vh;
   display: flex;
@@ -41,4 +43,79 @@ body {
 .msg {
   color: white;
   text-align: center;
+}
+
+/* ========================= */
+/* 회원가입 (추가된 부분) */
+/* ========================= */
+
+.signup-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #0f3d57, #1e6f8a);
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.signup-card h1 {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #12384d;
+}
+
+.signup-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signup-grid input {
+  height: 46px;
+  border: 1px solid #d7e0e7;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.signup-divider {
+  text-align: center;
+  font-size: 14px;
+  color: #4a6576;
+  margin: 4px 0;
+}
+
+.signup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.signup-actions button {
+  height: 46px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.signup-actions .secondary {
+  background: #dfe8ee;
+  color: #12384d;
+}
+
+.signup-message {
+  margin-top: 16px;
+  text-align: center;
+  color: #12384d;
 }
