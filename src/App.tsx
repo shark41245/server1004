@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin1004" element={<AdminPage />} />
       <Route path="/signup" element={<SignupPage />} />
     </Routes>
   );
